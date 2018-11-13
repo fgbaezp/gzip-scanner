@@ -17,23 +17,15 @@ namespace gzip
         {
             
             var options = new Options();
-            options.ConnectionStringSource = args[1];
-            options.Container = args[0];
-                
+            options.ConnectionStringSource = args[0];
             var storageAccountS = CloudStorageAccount.Parse(options.ConnectionStringSource);
-            var storageAccountD = CloudStorageAccount.Parse(options.ConnectionStringSource);
-            
             var blobClientS = storageAccountS.CreateCloudBlobClient();
             var blobContainerS = blobClientS.GetContainerReference(options.Container);
-
-            var blobClientD = storageAccountD.CreateCloudBlobClient();
-            var blobContainerD = blobClientD.GetContainerReference(options.Container);
 
             var stopWatch = new Stopwatch();
             stopWatch.Start();
 
-            // Do the compression work
-            await new Utility().EnsureGzipFiles(blobContainerS, blobContainerD );
+            await new Utility().EnsureGzipFiles(blobContainerS);
 
             stopWatch.Stop();
             // Get the elapsed time as a TimeSpan value.
