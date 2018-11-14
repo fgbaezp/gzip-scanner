@@ -16,33 +16,14 @@ namespace gzip
     {
         public async Task EnsureGzipFiles(CloudBlobContainer containerS)
         {
-          
+            //segmented and await
              var blobInfos = containerS.ListBlobs("", true, BlobListingDetails.Metadata);
              List<string> names = new List<string>();
              
              foreach(var blob in blobInfos){
-                names.Add(blob.Uri.AbsolutePath);
+                var path = blob.Uri.AbsolutePath.Substring(1, blob.Uri.AbsolutePath.LastIndexOf('/'));
+                names.Add(path);
              }
         }
-
-        public async Task Upload(IListBlobItem blobInfo, CloudBlobContainer containerD, string prefix){
-            
-                var blob = (CloudBlob)blobInfo; 
-                containerD.CreateIfNotExistsAsync().Wait();
-                var destinationBlob = containerD.GetBlockBlobReference(prefix+"/"+Guid.NewGuid()+".json");
-            
-                // Upload the compressed bytes to the new blob
-               
-                var x = await blob.OpenReadAsync();
-                await destinationBlob.UploadFromStreamAsync(x);
-                            
-                // Set the blob headers
-                destinationBlob.Properties.ContentType = blob.Properties.ContentType;
-                destinationBlob.SetProperties();
-                
-        }
-
-
-
     }
 }

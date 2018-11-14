@@ -17,15 +17,17 @@ namespace gzip
         {
             
             var options = new Options();
-            options.ConnectionStringSource = args[0];
+            options.ConnectionStringSource = "DefaultEndpointsProtocol=https;AccountName=gzipo;AccountKey=woHoKXUE4OUefPQAPj6wn6afduTE42yAko9Steu89UTYKZkiTWIhHVDcU+i7Vk8dwxnM8e72H3KaDmXPir00nw==;EndpointSuffix=core.windows.net";
             var storageAccountS = CloudStorageAccount.Parse(options.ConnectionStringSource);
             var blobClientS = storageAccountS.CreateCloudBlobClient();
-            var blobContainerS = blobClientS.GetContainerReference(options.Container);
 
             var stopWatch = new Stopwatch();
             stopWatch.Start();
 
-            await new Utility().EnsureGzipFiles(blobContainerS);
+            foreach(var container in blobClientS.ListContainers()){
+                var blobContainerS = blobClientS.GetContainerReference(container.Name);
+                await new Utility().EnsureGzipFiles(blobContainerS);
+            }
 
             stopWatch.Stop();
             // Get the elapsed time as a TimeSpan value.

@@ -1,1 +1,6 @@
 bin/
+obj/
+obj/Debug/netcoreapp2.1/gzip.dll
+obj/Debug/netcoreapp2.1/gzip.pdb
+obj/Debug/netcoreapp2.1/gzip.csproj.FileListAbsolute.txt
+obj/Debug/netcoreapp2.1/gzip.csprojAssemblyReference.cache
