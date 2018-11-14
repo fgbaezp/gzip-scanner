@@ -17,7 +17,7 @@ namespace gzip
         {
             
             var options = new Options();
-            options.ConnectionStringSource = "DefaultEndpointsProtocol=https;AccountName=gzipo;AccountKey=woHoKXUE4OUefPQAPj6wn6afduTE42yAko9Steu89UTYKZkiTWIhHVDcU+i7Vk8dwxnM8e72H3KaDmXPir00nw==;EndpointSuffix=core.windows.net";
+            options.ConnectionStringSource = args[0];
             var storageAccountS = CloudStorageAccount.Parse(options.ConnectionStringSource);
             var blobClientS = storageAccountS.CreateCloudBlobClient();
 
@@ -26,7 +26,7 @@ namespace gzip
 
             foreach(var container in blobClientS.ListContainers()){
                 var blobContainerS = blobClientS.GetContainerReference(container.Name);
-                await new Utility().EnsureGzipFiles(blobContainerS);
+                await new Utility().EnsureGzipFiles(blobContainerS, options.ConnectionStringSource);
             }
 
             stopWatch.Stop();

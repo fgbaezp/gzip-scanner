@@ -16,10 +16,12 @@ namespace gzip
     class Utility
     {
 
-        CloudStorageAccount storageAccount = CloudStorageAccount.Parse("DefaultEndpointsProtocol=https;AccountName=gzipo;AccountKey=woHoKXUE4OUefPQAPj6wn6afduTE42yAko9Steu89UTYKZkiTWIhHVDcU+i7Vk8dwxnM8e72H3KaDmXPir00nw==;EndpointSuffix=core.windows.net");
-
-        public async Task EnsureGzipFiles(CloudBlobContainer containerS)
+        
+        public async Task EnsureGzipFiles(CloudBlobContainer containerS, string constring)
         {
+
+            var storageAccount = CloudStorageAccount.Parse(constring);
+
             //segmented and await
              var blobInfos = containerS.ListBlobs("", true, BlobListingDetails.Metadata);
              List<string> names = new List<string>();
