@@ -15,16 +15,14 @@ namespace gzip
 {
     class Utility
     {
-
-        
         public async Task EnsureGzipFiles(CloudBlobContainer containerS, string constring)
         {
 
             var storageAccount = CloudStorageAccount.Parse(constring);
 
             //segmented and await
-             var blobInfos = containerS.ListBlobs("", true, BlobListingDetails.Metadata);
-             List<string> names = new List<string>();
+            var blobInfos = containerS.ListBlobs("", true, BlobListingDetails.Metadata);
+            List<string> names = new List<string>();
              
              foreach(var blob in blobInfos){
                 var path = blob.Uri.AbsolutePath.Substring(1, blob.Uri.AbsolutePath.LastIndexOf('/')-1);
