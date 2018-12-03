@@ -17,7 +17,10 @@ namespace gzip
         {
             
             var options = new Options();
+			// From where am I going to retrieve the paths
             options.ConnectionStringSource = args[0];
+			// Where am I going to enqueue the paths
+			options.ConnectionStringDestination = args[1];
             var storageAccountS = CloudStorageAccount.Parse(options.ConnectionStringSource);
             var blobClientS = storageAccountS.CreateCloudBlobClient();
 
@@ -26,7 +29,7 @@ namespace gzip
 
             foreach(var container in blobClientS.ListContainers()){
                 var blobContainerS = blobClientS.GetContainerReference(container.Name);
-                await new Utility().EnsureGzipFiles(blobContainerS, options.ConnectionStringSource);
+                await new Utility().EnsureGzipFiles(blobContainerS, options.ConnectionStringDestination);
             }
 
             stopWatch.Stop();
