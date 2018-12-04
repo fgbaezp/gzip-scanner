@@ -14,7 +14,7 @@ namespace gzip
 
 		public GzipEnqueuer(CloudStorageAccount account)
 		{
-			account = account ?? throw new ArgumentNullException(nameof(account));
+			this.account = account ?? throw new ArgumentNullException(nameof(account));
 			var queueClient = account.CreateCloudQueueClient();
 			var queueRef = queueClient.GetQueueReference(queueName);
 			queueRef.CreateIfNotExistsAsync().Wait();

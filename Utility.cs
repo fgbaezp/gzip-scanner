@@ -21,7 +21,7 @@ namespace gzip
 
 		public Utility(IActor someone)
 		{
-			someone = someone ?? throw new ArgumentNullException(nameof(someone));
+			this.someone = someone ?? throw new ArgumentNullException(nameof(someone));
 		}
 
         public async Task EnsureGzipFiles(CloudBlobContainer containerS, string constring)

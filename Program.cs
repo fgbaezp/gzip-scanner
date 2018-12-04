@@ -41,7 +41,6 @@ namespace gzip
             // Format and display the TimeSpan value.
            
             Console.WriteLine("RunTime " + ts);
-           
         }
     }
 }
