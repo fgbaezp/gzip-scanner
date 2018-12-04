@@ -12,22 +12,24 @@ namespace gzip
 	public class GzipBlober : IActor
 	{
 		private readonly CloudStorageAccount account;
-		private readonly string blobName = "gzip";
+		private readonly string containerName = "gzip";
 
 		public GzipBlober(CloudStorageAccount account)
 		{
 			this.account = account ?? throw new ArgumentNullException(nameof(account));
 			var blobClient = account.CreateCloudBlobClient();
-			var blobContainer = blobClient.GetContainerReference(blobName);
+			var blobContainer = blobClient.GetContainerReference(containerName);
 			blobContainer.CreateIfNotExists();
 		}
 
 		public async Task Act(string content)
 		{
 			var blobName = String.Copy(content);
-			Regex.Replace(blobName, @"\s+", "");
+			blobName = Regex.Replace(blobName, @"\s+", "");
+			blobName = Regex.Replace(blobName, "/", "");
+			blobName = $"{blobName}-{Guid.NewGuid()}";
 			var blobClient = account.CreateCloudBlobClient();
-			var blobContainer = blobClient.GetContainerReference(blobName);
+			var blobContainer = blobClient.GetContainerReference(containerName);
 			CloudBlockBlob cloudBlockBlob = blobContainer.GetBlockBlobReference(blobName);
 			await cloudBlockBlob.UploadTextAsync(content);
 		}
