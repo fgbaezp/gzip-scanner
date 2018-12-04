@@ -21,7 +21,7 @@ namespace gzip
 			// Where am I going to enqueue the paths
 			options.ConnectionStringDestination = args[1];
 
-			var containerSourceName = args[2];
+			string containerSourceName = (args.Length > 2) ? args[2] : null;
             var storageAccountS = CloudStorageAccount.Parse(options.ConnectionStringSource);
 			var storageAccountDestination = CloudStorageAccount.Parse(options.ConnectionStringDestination);
 
@@ -30,7 +30,7 @@ namespace gzip
             var stopWatch = new Stopwatch();
             stopWatch.Start();
 
-			var util = new Utility(new GzipEnqueuer(storageAccountDestination));
+			var util = new Utility(new GzipBlober(storageAccountDestination));
 
 			if (string.IsNullOrEmpty(containerSourceName))
 			{
