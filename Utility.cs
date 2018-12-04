@@ -23,7 +23,7 @@ namespace gzip
 			this.someone = someone ?? throw new ArgumentNullException(nameof(someone));
 		}
 
-        public async Task EnsureGzipFiles(CloudBlobContainer containerS, string containerSource)
+        public async Task EnsureGzipFiles(CloudBlobContainer containerS)
         {
             //segmented and await
             var blobInfos = containerS.ListBlobs("", true, BlobListingDetails.Metadata);

@@ -37,13 +37,13 @@ namespace gzip
 				foreach (var container in blobClientS.ListContainers())
 				{
 					var blobContainerS = blobClientS.GetContainerReference(container.Name);
-					await util.EnsureGzipFiles(blobContainerS, options.ConnectionStringDestination);
+					await util.EnsureGzipFiles(blobContainerS);
 				}
 			}
             else
 			{
 				var container = blobClientS.GetContainerReference(containerSourceName);
-				await util.EnsureGzipFiles(container, options.ConnectionStringDestination);
+				await util.EnsureGzipFiles(container);
 			}
 
             stopWatch.Stop();
