@@ -29,7 +29,6 @@ namespace gzip
 
         public async Task EnsureGzipFiles(CloudBlobContainer containerS, string constring)
         {
-
             var storageAccount = CloudStorageAccount.Parse(constring);
 
             //segmented and await
@@ -50,7 +49,6 @@ namespace gzip
                 var message = new CloudQueueMessage(name);
 				await queue.AddMessageAsync(message);
             }
-
         }
     }
 }
