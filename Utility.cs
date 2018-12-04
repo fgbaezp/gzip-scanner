@@ -16,7 +16,6 @@ namespace gzip
     class Utility
     {
 		private string DestinationConnectionString { get; }
-		private readonly string queueName = "gzip";
 		private readonly IActor someone;
 
 		public Utility(IActor someone)
@@ -24,7 +23,7 @@ namespace gzip
 			this.someone = someone ?? throw new ArgumentNullException(nameof(someone));
 		}
 
-        public async Task EnsureGzipFiles(CloudBlobContainer containerS, string constring)
+        public async Task EnsureGzipFiles(CloudBlobContainer containerS, string containerSource)
         {
             //segmented and await
             var blobInfos = containerS.ListBlobs("", true, BlobListingDetails.Metadata);

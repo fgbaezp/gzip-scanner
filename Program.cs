@@ -21,6 +21,7 @@ namespace gzip
 			// Where am I going to enqueue the paths
 			options.ConnectionStringDestination = args[1];
 
+			var containerSourceName = args[2];
             var storageAccountS = CloudStorageAccount.Parse(options.ConnectionStringSource);
 			var storageAccountDestination = CloudStorageAccount.Parse(options.ConnectionStringDestination);
 
@@ -30,10 +31,20 @@ namespace gzip
             stopWatch.Start();
 
 			var util = new Utility(new GzipEnqueuer(storageAccountDestination));
-            foreach(var container in blobClientS.ListContainers()){
-                var blobContainerS = blobClientS.GetContainerReference(container.Name);
-                await util.EnsureGzipFiles(blobContainerS, options.ConnectionStringDestination);
-            }
+
+			if (string.IsNullOrEmpty(containerSourceName))
+			{
+				foreach (var container in blobClientS.ListContainers())
+				{
+					var blobContainerS = blobClientS.GetContainerReference(container.Name);
+					await util.EnsureGzipFiles(blobContainerS, options.ConnectionStringDestination);
+				}
+			}
+            else
+			{
+				var container = blobClientS.GetContainerReference(containerSourceName);
+				await util.EnsureGzipFiles(container, options.ConnectionStringDestination);
+			}
 
             stopWatch.Stop();
             // Get the elapsed time as a TimeSpan value.
