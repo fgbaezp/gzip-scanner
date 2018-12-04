@@ -15,19 +15,21 @@ namespace gzip
     {
         static async Task Main(string[] args)
         {
-            
             var options = new Options();
 			// From where am I going to retrieve the paths
             options.ConnectionStringSource = args[0];
 			// Where am I going to enqueue the paths
 			options.ConnectionStringDestination = args[1];
+
             var storageAccountS = CloudStorageAccount.Parse(options.ConnectionStringSource);
+			var storageAccountDestination = CloudStorageAccount.Parse(options.ConnectionStringDestination);
+
             var blobClientS = storageAccountS.CreateCloudBlobClient();
 
             var stopWatch = new Stopwatch();
             stopWatch.Start();
 
-			var util = new Utility(options.ConnectionStringDestination);
+			var util = new Utility(new GzipEnqueuer(storageAccountDestination));
             foreach(var container in blobClientS.ListContainers()){
                 var blobContainerS = blobClientS.GetContainerReference(container.Name);
                 await util.EnsureGzipFiles(blobContainerS, options.ConnectionStringDestination);

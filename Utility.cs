@@ -17,20 +17,15 @@ namespace gzip
     {
 		private string DestinationConnectionString { get; }
 		private readonly string queueName = "gzip";
+		private readonly IActor someone;
 
-		public Utility(string destinationConnectionString)
+		public Utility(IActor someone)
 		{
-			DestinationConnectionString = destinationConnectionString;
-			var account = CloudStorageAccount.Parse(destinationConnectionString);
-			var queueClient = account.CreateCloudQueueClient();
-			var queueRef = queueClient.GetQueueReference(queueName);
-			queueRef.CreateIfNotExistsAsync().Wait();
+			someone = someone ?? throw new ArgumentNullException(nameof(someone));
 		}
 
         public async Task EnsureGzipFiles(CloudBlobContainer containerS, string constring)
         {
-            var storageAccount = CloudStorageAccount.Parse(constring);
-
             //segmented and await
             var blobInfos = containerS.ListBlobs("", true, BlobListingDetails.Metadata);
             List<string> names = new List<string>();
@@ -42,12 +37,8 @@ namespace gzip
 
             names = names.Distinct().ToList();
 
-            var queueClient = storageAccount.CreateCloudQueueClient();
-            var queue = queueClient.GetQueueReference("gzip");
-
-            foreach(var name in names){
-                var message = new CloudQueueMessage(name);
-				await queue.AddMessageAsync(message);
+			foreach(var name in names){
+				await someone.Act(name);
             }
         }
     }
