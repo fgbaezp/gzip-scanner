@@ -15,6 +15,18 @@ namespace gzip
 {
     class Utility
     {
+		private string DestinationConnectionString { get; }
+		private readonly string queueName = "gzip";
+
+		public Utility(string destinationConnectionString)
+		{
+			DestinationConnectionString = destinationConnectionString;
+			var account = CloudStorageAccount.Parse(destinationConnectionString);
+			var queueClient = account.CreateCloudQueueClient();
+			var queueRef = queueClient.GetQueueReference(queueName);
+			queueRef.CreateIfNotExistsAsync().Wait();
+		}
+
         public async Task EnsureGzipFiles(CloudBlobContainer containerS, string constring)
         {
 
@@ -36,7 +48,7 @@ namespace gzip
 
             foreach(var name in names){
                 var message = new CloudQueueMessage(name);
-                await queue.AddMessageAsync(message);
+				await queue.AddMessageAsync(message);
             }
 
         }

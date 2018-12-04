@@ -27,9 +27,10 @@ namespace gzip
             var stopWatch = new Stopwatch();
             stopWatch.Start();
 
+			var util = new Utility(options.ConnectionStringDestination);
             foreach(var container in blobClientS.ListContainers()){
                 var blobContainerS = blobClientS.GetContainerReference(container.Name);
-                await new Utility().EnsureGzipFiles(blobContainerS, options.ConnectionStringDestination);
+                await util.EnsureGzipFiles(blobContainerS, options.ConnectionStringDestination);
             }
 
             stopWatch.Stop();
