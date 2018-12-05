@@ -34,16 +34,22 @@ namespace gzip
 
 			if (string.IsNullOrEmpty(containerSourceName))
 			{
+				Console.WriteLine("All containers");
 				foreach (var container in blobClientS.ListContainers())
 				{
 					var blobContainerS = blobClientS.GetContainerReference(container.Name);
+					Console.WriteLine($"Starting container {0}", container.Name);
 					await util.EnsureGzipFiles(blobContainerS);
+					Console.WriteLine($"Finished container {0}", container.Name);
 				}
 			}
             else
 			{
+				Console.WriteLine("Specific container");
 				var container = blobClientS.GetContainerReference(containerSourceName);
+				Console.WriteLine($"Starting container {0}", container.Name);
 				await util.EnsureGzipFiles(container);
+				Console.WriteLine($"Finished container {0}", container.Name);
 			}
 
             stopWatch.Stop();

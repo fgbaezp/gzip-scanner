@@ -27,7 +27,7 @@ namespace gzip
         {
             //segmented and await
             var blobInfos = containerS.ListBlobs("", true, BlobListingDetails.Metadata);
-            List<string> names = new List<string>();
+			List<string> names = new List<string>();
              
              foreach(var blob in blobInfos){
                 var path = blob.Uri.AbsolutePath.Substring(1, blob.Uri.AbsolutePath.LastIndexOf('/')-1);
@@ -37,6 +37,7 @@ namespace gzip
             names = names.Distinct().ToList();
 
 			foreach(var name in names){
+				Console.WriteLine($"Acting over \"directory\" {0}", name);
 				await someone.Act(name);
             }
         }
