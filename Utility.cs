@@ -27,6 +27,7 @@ namespace gzip
         {
             //segmented and await
             var blobInfos = containerS.ListBlobs("", true, BlobListingDetails.Metadata);
+			Console.WriteLine($"# of blobs found in the container {containerS.Name}: {blobInfos.Count()}");
 			List<string> names = new List<string>();
              
              foreach(var blob in blobInfos){
