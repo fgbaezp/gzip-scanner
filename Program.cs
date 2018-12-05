@@ -38,18 +38,18 @@ namespace gzip
 				foreach (var container in blobClientS.ListContainers())
 				{
 					var blobContainerS = blobClientS.GetContainerReference(container.Name);
-					Console.WriteLine($"Starting container {0}", container.Name);
+					Console.WriteLine($"Starting container {container.Name}");
 					await util.EnsureGzipFiles(blobContainerS);
-					Console.WriteLine($"Finished container {0}", container.Name);
+					Console.WriteLine($"Finished container {container.Name}");
 				}
 			}
             else
 			{
 				Console.WriteLine("Specific container");
 				var container = blobClientS.GetContainerReference(containerSourceName);
-				Console.WriteLine($"Starting container {0}", container.Name);
+				Console.WriteLine($"Starting container {container.Name}");
 				await util.EnsureGzipFiles(container);
-				Console.WriteLine($"Finished container {0}", container.Name);
+				Console.WriteLine($"Finished container {container.Name}");
 			}
 
             stopWatch.Stop();

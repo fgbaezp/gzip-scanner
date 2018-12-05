@@ -37,7 +37,7 @@ namespace gzip
             names = names.Distinct().ToList();
 
 			foreach(var name in names){
-				Console.WriteLine($"Acting over \"directory\" {0}", name);
+				Console.WriteLine($"Acting over \"directory\" {name}");
 				await someone.Act(name);
             }
         }
