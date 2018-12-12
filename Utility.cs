@@ -36,6 +36,7 @@ namespace gzip
 				Console.WriteLine($"Iteration: {++iteration} with # of blobs received for the request {containerS.Name}: {response.Results.Count()}");
 				continuationToken = response.ContinuationToken;
 				blobInfos.AddRange(response.Results);
+				Console.WriteLine($"# {blobInfos.Count} of blobs added");
 			}
 			while (continuationToken != null);
 			Console.WriteLine($"# of blobs found in the container {containerS.Name}: {blobInfos.Count}");
