@@ -31,7 +31,8 @@ namespace gzip
 			BlobContinuationToken continuationToken = null;
 			do
 			{
-				var response = await containerS.ListBlobsSegmentedAsync(continuationToken);
+				var response = await containerS.ListBlobsSegmentedAsync("", true, BlobListingDetails.Metadata, null, continuationToken, null, null);
+				Console.WriteLine($"# of blobs received for the request {containerS.Name}: {response.Results.Count()}");
 				continuationToken = response.ContinuationToken;
 				blobInfos.AddRange(response.Results);
 			}
