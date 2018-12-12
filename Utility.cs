@@ -29,10 +29,11 @@ namespace gzip
 			//var blobInfos = containerS.ListBlobs("", true, BlobListingDetails.Metadata);
 			List<IListBlobItem> blobInfos = new List<IListBlobItem>();
 			BlobContinuationToken continuationToken = null;
+			var iteration = 0;
 			do
 			{
 				var response = await containerS.ListBlobsSegmentedAsync("", true, BlobListingDetails.Metadata, null, continuationToken, null, null);
-				Console.WriteLine($"# of blobs received for the request {containerS.Name}: {response.Results.Count()}");
+				Console.WriteLine($"Iteration: {++iteration} with # of blobs received for the request {containerS.Name}: {response.Results.Count()}");
 				continuationToken = response.ContinuationToken;
 				blobInfos.AddRange(response.Results);
 			}
