@@ -25,9 +25,18 @@ namespace gzip
 
         public async Task EnsureGzipFiles(CloudBlobContainer containerS)
         {
-            //segmented and await
-            var blobInfos = containerS.ListBlobs("", true, BlobListingDetails.Metadata);
-			Console.WriteLine($"# of blobs found in the container {containerS.Name}: {blobInfos.Count()}");
+			//segmented and await
+			//var blobInfos = containerS.ListBlobs("", true, BlobListingDetails.Metadata);
+			List<IListBlobItem> blobInfos = new List<IListBlobItem>();
+			BlobContinuationToken continuationToken = null;
+			do
+			{
+				var response = await containerS.ListBlobsSegmentedAsync(continuationToken);
+				continuationToken = response.ContinuationToken;
+				blobInfos.AddRange(response.Results);
+			}
+			while (continuationToken != null);
+			Console.WriteLine($"# of blobs found in the container {containerS.Name}: {blobInfos.Count}");
 			List<string> names = new List<string>();
              
              foreach(var blob in blobInfos){
