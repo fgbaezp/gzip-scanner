@@ -30,7 +30,10 @@ namespace gzip
             var stopWatch = new Stopwatch();
             stopWatch.Start();
 
-			var util = new Utility(new GzipBlober(storageAccountDestination));
+			var util = new Utility(
+				//new GzipBlober(storageAccountDestination)
+				new GzipEnqueuer(storageAccountDestination)
+			);
 
 			if (string.IsNullOrEmpty(containerSourceName))
 			{
